@@ -22,6 +22,8 @@ function eventListeners(){
     });
 
     productList.addEventListener('click', purchaseProduct);
+
+    cartList.addEventListener('click', deleteProduct);
 }
 
 function updateCartInfo(){
@@ -104,6 +106,7 @@ function saveProductInStorage(item){
     let products = getProductFromStorage();
     products.push(item);
     localStorage.setItem('products', JSON.stringify(products))
+    updateCartInfo();
 }
 
 function getProductFromStorage(){
@@ -121,6 +124,8 @@ function loadCart(){
         cartItemID++;    
     }
     products.forEach(products => addToCartList(product));
+
+    updateCartInfo();
 }
 
 function findCartInfo(){
@@ -137,3 +142,21 @@ function findCartInfo(){
     }
 } 
 
+function deleteProduct(e){
+    let cartItem;
+    if(e.target.tagName === "BUTTON"){
+        cartItem = e.target.parentElement;
+        cartItem.remove();
+    }  else if (e.target.tagName === "I"){
+        cartItem = e.target.parentElement.parentElement;
+        cartItem.remove();
+    }
+
+    let products = getProductFromStorage();
+    let updatedProducts = products.filter(product => {
+        return product.id !== parseInt(cartItem.dataset.id);
+    })
+   localStorage.setItem('products', JSON.stringify(updatedProducts));
+
+   updateCartInfo();
+}
