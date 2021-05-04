@@ -70,6 +70,7 @@ function getProductInfo(product){
     }
     cartItemID++;
     addToCartList(productInfo);
+    saveProductInStorage(productInfo);
 }
 
 function addToCartList(product) {
@@ -91,3 +92,12 @@ function addToCartList(product) {
     cartList.appendChild(cartItem);
 }
 
+function saveProductInStorage(item){
+    let products = getProductFromStorage();
+    products.push(item);
+    localStorage.setItem('products', JSON.stringify(products))
+}
+
+function getProductFromStorage(){
+    return localStorage.getItem('products') ? JSON.parse(localStorage.getItem('products')) : [];
+} 
