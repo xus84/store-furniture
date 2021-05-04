@@ -24,6 +24,13 @@ function eventListeners(){
     productList.addEventListener('click', purchaseProduct);
 }
 
+function updateCartInfo(){
+    let cartInfo = findCartInfo();
+    cartCountInfo.textContent = cartInfo.productCount;
+    cartTotalValue.textContent = cartInfo.total;
+}
+updateCartInfo();
+
 function loadJSON(){
     fetch('furniture.json')
     .then(response => response.json())
@@ -113,5 +120,20 @@ function loadCart(){
         cartItemID =products[products.length -1].id;
         cartItemID++;    
     }
-    console.log(cartItemID);
+    products.forEach(products => addToCartList(product));
 }
+
+function findCartInfo(){
+    let products = getProductFromStorage();
+    let total = products.reduce((acc, product) =>{
+        let price = parseFloat(product.price.substr(1));
+
+        return acc += price;
+    }, 0);
+    
+    return {
+        total: total.toFixed(2),
+        productCount: products.length
+    }
+} 
+
