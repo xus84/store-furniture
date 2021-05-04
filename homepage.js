@@ -11,6 +11,7 @@ eventListeners();
 function eventListeners(){
     window.addEventListener('DOMContentLoaded', () => {
         loadJSON();
+        loadCart();
     });
     document.querySelector('.navbar-toggler').addEventListener('click', () => {
         document.querySelector('.navbar-collapse').classList.toggle('show-navbar');
@@ -101,3 +102,16 @@ function saveProductInStorage(item){
 function getProductFromStorage(){
     return localStorage.getItem('products') ? JSON.parse(localStorage.getItem('products')) : [];
 } 
+
+
+function loadCart(){
+    let products = getProductFromStorage();
+    if(products.length < 1){
+        cartItemID = 1;
+         
+    } else {
+        cartItemID =products[products.length -1].id;
+        cartItemID++;    
+    }
+    console.log(cartItemID);
+}
